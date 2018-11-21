@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<head>
+    <title>Søk</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
+          integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+
+</head>
+<body>
+
+<div class="container pb-5">
+
+    {% if sok == "sokefelt" %}
+        <h2 class="mt-5">Blogginnlegg som inneholder ordet "{{ sokeord }}"</h2>
+        <br>
+    {% for Innlegg in innleggInnhold %}
+
+        <table class="table">
+            <tr>
+                <td><a href="VisInnlegg.php?id={{ Innlegg.hentId() }}"><h4>{{ Innlegg.hentTittel() }}</h4></a></td>
+            </tr>
+        </table>
+
+    {% endfor %}
+
+    {% endif %}
+
+    <h2 class="mt-5">Blogginnlegg som har stikkordet "{{ sokeord }}"</h2>
+    <br>
+    {% for Innlegg in innleggStikkord %}
+
+        <table class="table">
+            <tr>
+                <td><a href="VisInnlegg.php?id={{ Innlegg.hentId() }}"><h4>{{ Innlegg.hentTittel() }}</h4></a></td>
+            </tr>
+        </table>
+    {% endfor %}
+
+
+</div>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<head>
+    <title>Nytt innlegg</title>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
+          integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+
+    <style>
+        .error {
+            color: #FF0000;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container pb-5">
+    <h2 class="mt-5">Opprett ny blogg</h2>
+<br>
+    {% if blogg == "opprettet" %}
+        <div class="card">
+            <div class="card-body">
+                <p class="lead">Bloggen din er opprettet!</p>
+                <p class="card-text">Du blir straks sendt tilbake til 'Min side'</p>
+            </div>
+        </div>
+
+    {% else %}
+
+    <form method="post" action="../Blogg/NyBlogg.php">
+        <div class="form-group">
+            <label><h4>Tittel:</h4></label>
+            <input type="text" name="tittel" class="form-control" placeholder="Velg en tittel på bloggen din"
+                   required>
+        </div>
+        <div class="form-group">
+            <label><h4>Stil:</h4></label>
+            <input type="text" name="stil" class="form-control" placeholder="Stil på bloggen din"
+                   required>
+        </div>
+        <span class="error"><?php echo $tittelErr; ?></span>
+        <br><br>
+
+        <button name="submit" type="submit" class="btn btn-warning">Opprett blogg</button>
+
+    </form>
+
+    {% endif %}
+
+</div>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
+          integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+</head>
+<body>
+<!--Navbar------------------------------->
+<nav class="navbar navbar-expand-sm navbar-light bg-light fixed-top">
+    <div class="container">
+        <div class="collapse navbar-collapse" id="navbar">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="../Blogg/Hjem.php">Hjem</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="../Blogg/BloggRegister.php">Alle blogger</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="../Blogg/MinSide.php">Min side</a>
+                </li>
+                <li class="nav-item">
+                    {% if innlogget == "innlogget" %}
+                    <form method="post" action="../Blogg/LoggInn.php">
+                        <a class="nav-link" href="../Blogg/LoggInn.php?logout">Logg ut</a>
+                    </form>
+                    {% else %}
+                        <a class="nav-link" href="../Blogg/LoggInn.php">Logg inn</a>
+                    {% endif %}
+
+                </li>
+            </ul>
+            <form class="form-inline my-2 my-lg-0" action="../Blogg/Sok.php" method="post">
+                <input class="form-control mr-sm-2" type="search" placeholder="Søk etter blogg" name="sok" required>
+                <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">Søk</button>
+            </form>
+        </div>
+    </div>
+</nav>
+
+<!--Header------------------------------->
+<div class="jumbotron jumbotron-fluid bg-light">
+    <div class="container">
+        {% if tittel == "bloggtittel" %}
+            <h1 class="display-2">{{ Blogg.hentTittel() }}</h1>
+            <p class="lead">..av {{ Blogg.hentKallenavn() }}</p>
+        {% elseif tittel == "minside" %}
+            <h1 class="display-2">Min side</h1>
+            <p class="lead">..{{ kallenavn }}</p>
+        {% elseif tittel == "standard" %}
+            <h1 class="display-2">Velkommen til bloggen</h1>
+            <p class="lead">..siden med alle de kule bloggene</p>
+
+        {% endif %}
+    </div>
+</div>
+
+
+</body>
+</html>

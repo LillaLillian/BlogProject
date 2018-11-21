@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<head>
+    <title>Nytt innlegg</title>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
+          integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+
+    <style>
+        .error {
+            color: #FF0000;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container pb-5">
+    {% if innlegg == "postet" %}
+        <div class="card">
+            <div class="card-body">
+                <p class="lead">Innlegget ditt er postet!</p>
+                <p class="card-text">Du blir straks sendt tilbake til bloggen din.</p>
+            </div>
+        </div>
+    {% else %}
+        <h2 class="mt-5">Skriv et nytt innlegg</h2>
+
+        <br>
+        <form method="post" enctype="multipart/form-data" action="../Blogg/AlternativInnlegg.php">
+            <div class="form-group">
+                <label><h4>Tittel:</h4></label>
+                <input type="text" name="tittel" class="form-control" placeholder="Velg en tittel på innlegget ditt"
+                       required>
+                <input type="hidden" name="id" value="{{ Blogg.hentId() }}">
+                <input type="hidden" name="bruker_id" value="{{ Blogg.hentEier() }}">
+            </div>
+            <span class="error"><?php echo $tittelErr; ?></span>
+            <br><br>
+
+            <div class="form-group">
+                <label><h4>Innlegg:</h4></label>
+                <textarea name="tekst" class="form-control mb-5" rows="10"></textarea>
+            </div>
+
+            <div>
+                <!--  Velge stikkord kommer her -->
+                <div class="row">
+                    <div class="col col-7">
+                        Velg stikkord:
+
+                        <select name="valgte_stikkord[]" multiple="multiple" multiple class="form-control">
+                            {% for Stikkord in alle_stikkord %}
+
+                                <option value="{{ Stikkord.hentTekst() }}">{{ Stikkord.hentTekst() }}</option>
+
+                            {% endfor %}
+
+                        </select>
+                    </div>
+                    <br>
+                    <div class="col">
+
+                        Eller legg inn egne stikkord:<br>
+                        <div class="row ml-0">
+                            <input type="text" class="form-control-sm mb-1" name="valgte_stikkord[]"
+                                   placeholder="Stikkord 1">
+                            <input type="text" class="form-control-sm mb-1 ml-1" name="valgte_stikkord[]"
+                                   placeholder="Stikkord 4">
+                        </div>
+                        <div class="row ml-0">
+                            <input type="text" class="form-control-sm mb-1" name="valgte_stikkord[]"
+                                   placeholder="Stikkord 2">
+                            <input type="text" class="form-control-sm mb-1 ml-1" name="valgte_stikkord[]"
+                                   placeholder="Stikkord 5">
+                        </div>
+                        <div class="row ml-0">
+                            <input type="text" class="form-control-sm mb-1" name="valgte_stikkord[]"
+                                   placeholder="Stikkord 3">
+                            <input type="text" class="form-control-sm mb-1 ml-1" name="valgte_stikkord[]"
+                                   placeholder="Stikkord 6">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+
+            <p>Last opp vedlegg (maks ca 200 kb) sammen med innlegget: </p>
+            <input type="hidden" name="MAX_FILE_SIZE" value="365536"/>
+            <!-- delkode fra vedleggforelesningeksempelfiler -->
+            <table border="0" cellspacing="0" cellpadding="5" width="400">
+                <tr>
+                    <td>
+                        <input name="bildeFil" type="file" value="Post"/>
+                    </td>
+                </tr>
+
+            </table>
+
+            <br>
+
+
+            <button name="submit" type="submit" class="btn btn-warning">Post innlegg</button>
+
+        </form>
+    {% endif %}
+
+</div>
+</body>
+</html>

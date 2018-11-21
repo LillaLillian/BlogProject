@@ -1,0 +1,51 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Logg inn</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
+          integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+</head>
+<body>
+
+<div class="container pb-5">
+    <h2 class="mt-5">Logg inn: </h2>
+    {% if innlogging == "feilet" %}
+        <div class="card">
+            <div class="card-body">
+                <p class="lead">Innlogging feilet!</p>
+                <p class="card-text">Feil brukernavn eller passord, prøv på nytt.</p>
+                <a class="btn btn-warning" href="../Blogg/LoggInn.php" role="button">Prøv på nytt</a>
+                <a class="btn btn-warning" href="../Blogg/Hjem.php" role="button">Hjem</a>
+            </div>
+        </div>
+
+    {% else %}
+    <form method="post" action="../Blogg/LoggInn.php">
+        <div class="form-group">
+            <label>Brukernavn</label>
+            <input name="brukernavn" class="form-control col-5" placeholder="Brukernavn" required>
+        </div>
+
+        <div class="form-group">
+            <label>Passord</label>
+            <input name="passord" type=password class="form-control col-5" placeholder="Passord" required>
+        </div>
+
+        <button name="submit" type="submit" class="btn btn-warning">Logg inn</button>
+
+    </form>
+    <br>
+    <a href="../Blogg/Registrering.php">..eller registrer ny bruker</a>
+
+    <br><br>
+{% endif %}
+
+
+</div>
+</body>
+</html>

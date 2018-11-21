@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>
+      Filarkiv - viser filer fra database
+    </title>
+		<link type="text/css" rel="stylesheet" href="stilark.css" />
+        <meta content='text/html; charset=UTF-8' http-equiv='Content-Type'/>
+  </head>
+  <body>
+   {%if status %}
+        <h3>{{status}}</h3>
+        <h3>{{statusMessage}}</h3>
+    {%elseif filene %}
+        <h1>
+            Filarkiv - viser filer fra database
+        </h1>
+		<div id="filliste">
+            <ul>
+                  {% for fil in filene %}
+                        <li>
+                            {{fil.dato}}&nbsp;<a href="{{skript}}?id={{fil.id}}">{{fil.filnavn}}</a>
+                        </li>
+
+                  {% endfor %}
+            </ul>
+        </div>
+
+      <p>Last opp fil til db: </p>
+      <form enctype="multipart/form-data" method="post">
+           <input type="hidden" name="MAX_FILE_SIZE" value="365536" />
+              <table border="1" cellspacing="0" cellpadding="5" width="400">
+                <tr>
+                  <td>
+                    <input name="bildeFil" type="file" />
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="2" width="400" align="middle">
+                    <input type="submit" name="post_file" value="Post" />
+                  </td>
+                </tr>
+              </table>
+      </form>
+
+    {% endif %}
+  </body>
+</html>

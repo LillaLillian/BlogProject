@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Min side</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
+          integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+
+</head>
+<body>
+<div class="container pb-5">
+    <h2 class="ml-3 mt-5">Mine blogger: </h2>
+    <div class="row no-margin">
+
+        <!-- Vis mine blogger------------------------>
+        <div class="col col-sm-9">
+
+            <table class="table">
+                <tr>
+                    <th>Tittel</th>
+                    <th>Antall innlegg</th>
+                </tr>
+                {% for Blogg in Blogger %}
+                    <tr>
+                        <td><a href="VisBlogg.php?id={{ Blogg.hentId() }}">{{ Blogg.hentTittel() }}</a></td>
+                        <td>{{ Blogg.hentAntallInnlegg() }}</td>
+                    </tr>
+
+                {% endfor %}
+            </table>
+        </div>
+
+
+        <!-- Logg inn kort------------------------>
+
+        <div class="col col-sm-3">
+            <div class="card">
+                <div class="card-body">
+                    {% if innlogget == "innlogget" %}
+                        <form method="post" action="../Blogg/NyBlogg.php"><input type="submit"
+                                                                                 class="btn btn-warning btn-block"
+                                                                                 name="Ny_blogg" value="Opprett blogg">
+                        </form>
+                        <br>
+                        <form method="post" action="../Blogg/LoggInn.php?logout"><input type="submit"
+                                                                                        class="btn btn-warning btn-block"
+                                                                                        name="logout" value="Logg ut">
+                        </form>
+
+
+                    {% else %}
+                        <p class="lead">Er du en blogger?</p>
+                        <a class="btn btn-warning btn-block" href="../Blogg/LoggInn.php" role="button">Logg inn</a>
+                        <br/><br/>
+                        <a href="../Blogg/Registrering.php" class="card-link">...eller registrer ny bruker for å bli en
+                            blogger!</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>

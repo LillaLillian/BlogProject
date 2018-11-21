@@ -1,0 +1,54 @@
+body {
+    max-width: 500px;
+    margin: auto;
+    font-family: verdana;
+}
+
+h1 {
+    text-align: center;
+    color: darkseagreen;
+}
+
+h3 {
+    text-align: center;
+    color: darkgreen;
+}
+
+a {
+    color: darkseagreen;
+    text-decoration: none;
+    background: none;
+    padding: 5px;
+}
+
+table {
+    border: 1px solid darkseagreen;
+    border-collapse: collapse;
+}
+
+.visEn td:nth-child(odd){
+    font-weight: bold;
+}
+
+th, td {
+    text-align: left;
+    padding: 10px;
+    border: 1px solid darkseagreen;
+    border-collapse: collapse;
+}
+
+th {
+    color: white;
+    background: darkseagreen;
+    text-transform: uppercase;
+}
+
+.innleggtekst {
+    background-color: aliceblue;
+}
+
+.kommentar {
+    background-color: blue;
+    font-size: smaller;
+    color: white;
+}

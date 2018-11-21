@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{{ Blogg.hentTittel() }}</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
+          integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+
+</head>
+
+<body>
+<div class="container pb-5">
+
+    <!-- Tilbakemelding om innlegg er blitt slettet------------------------------------>
+    {% if innlegg == "slettet" %}
+        <div class="card">
+            <div class="card-body">
+                <p class="lead">Innlegget ditt er blitt slettet!</p>
+                <p class="card-text">Du blir straks sendt tilbake til bloggen din.</p>
+            </div>
+        </div>
+
+        <!-- Tilbakemelding om kommentar er blitt slettet------------------------------------>
+    {% elseif kommentar == "slettet" %}
+        <div class="card">
+            <div class="card-body">
+                <p class="lead">Kommentaren er blitt slettet!</p>
+                <p class="card-text">Du blir straks sendt tilbake til innlegget.</p>
+            </div>
+        </div>
+    {% else %}
+
+        <!-- Knapp: bloggens hjemmeside ----------------------------------------------------->
+        <div class="row justify-content-end ">
+            <a class="btn btn-warning mr-3" href="../Blogg/VisBlogg.php?id={{ Blogg.hentId() }}" role="button">Bloggens
+                hjemmeside</a>
+        </div>
+
+        <!-- Vis innlegg ---------------------------------------------------------------->
+        <div class="card text-center mt-3">
+            <div class="card-header text-uppercase">{{ Innlegg.hentTittel() }}</div>
+
+            <!-- Gir muligheten til å slette innlegg hvis Eier -------------------------->
+            {% if innlogget == "innloggetEier" %}
+                <form method="post" action="../Blogg/slettInnlegg.php?id={{ Innlegg.hentId() }}">
+                    <input type="hidden" value="{{ Blogg.hentEier() }}" name="blogg_eier"/>
+                    <input type="hidden" value="{{ Blogg.hentId() }}" name="blogg_id"/>
+                    <div class="row justify-content-end mt-3 mr-3">
+                        <button name="submit" type="submit" class="btn btn-outline-warning">Slett innlegg</button>
+                    </div>
+                </form>
+            {% endif %}
+
+            <div class="card-body">
+                <p class="card-text text-justify">{{ Innlegg.hentTekst() }} {{ fil.visOversikt2(Innlegg.hentId()) }}</p>
+                <p class="text-left"> {% for fil in fil %} {{ fil.dato }}&nbsp;<a
+                        href="filopplasting/file_db.php?id={{ fil.id }}">{{ fil.filnavn }}</a>{% endfor %}</p>
+                <p class="text-right"> Skrevet av {{ Innlegg.hentKallenavn() }}, {{ Innlegg.hentTidspunkt() }}, Antall
+                    visninger: {{ Innlegg.hentAntallTreff() + 1 }}</p>
+
+            </div>
+
+            <div class="card-footer">
+                <p class="text-left mb-5">Stikkord:
+                    {% for Stikkord in Innlegg.hentStikkordListe %}
+                        {% if (Innlegg.hentId() == Stikkord.hentInnleggId()) %}
+                            <a href="Sok.php?stikkord={{ Stikkord.hentTekst() }}">{{ Stikkord.hentTekst() }}</a>
+                        {% endif %}
+                    {% endfor %}
+                </p>
+
+                <!-- Kommentarer og underkommentarer ----------------------------------------------------->
+
+                <div class="container">
+                    {% for Kommentar in Innlegg.hentKommentarer() %}
+
+                        <!-- Viser hovedkommentarer ------------------------------------------------------>
+                        {% if Kommentar.hentKommentar_id() is null %}
+                            <div class="card text-right mb-3">
+                                <div class="container mt-3">
+
+                                    <!-- Gir muligheten til å slette kommentar, hvis eier av blogg--------->
+                                    {% if innlogget == "innloggetEier" %}
+                                        <form method="post"
+                                              action="../Blogg/SlettKommentar.php?id={{ Kommentar.hentId() }}">
+                                            <input type="hidden" value="{{ Blogg.hentEier() }}" name="blogg_eier"/>
+                                            <input type="hidden" value="{{ Blogg.hentId() }}" name="blogg_id"/>
+                                            <input type="hidden" value="{{ Innlegg.hentId() }}" name="innlegg_id"/>
+                                            <div class="row">
+                                                <div class="col col-sm-1">
+                                                    <button name="submit" type="submit"
+                                                            class="btn btn-outline-warning">
+                                                        Slett
+                                                    </button>
+                                                </div>
+                                                <div class="col col-sm-11">
+                                                    "{{ Kommentar.hentTekst() }}"
+                                                </div>
+
+                                            </div>
+
+                                        </form>
+
+                                    {% else %}
+                                        "{{ Kommentar.hentTekst() }}"
+                                    {% endif %}
+                                    <br>
+                                    <p class="text-muted">{{ Kommentar.hentKallenavn() }}
+                                        ({{ Kommentar.hentTidspunkt() }})
+                                    </p>
+                                    <br>
+                                </div> <!-- container som holder hovedkommentar -->
+
+                                <!--Viser underkommentarer til kommentaren ------------------------------->
+                                {% for Underkommentar in Innlegg.hentKommentarer %}
+
+                                    {% if Underkommentar.hentKommentar_id() == Kommentar.hentId() %}
+                                        <div class="text-right text-muted">
+                                            <div class="container ">
+
+                                                <!-- Gir muligheten til å slette kommentar, vis eier av blogg--------->
+                                                {% if innlogget == "innloggetEier" %}
+                                                    <form method="post"
+                                                          action="../Blogg/SlettKommentar.php?id={{ Underkommentar.hentId() }}">
+                                                        <input type="hidden" value="{{ Blogg.hentEier() }}"
+                                                               name="blogg_eier"/>
+                                                        <input type="hidden" value="{{ Blogg.hentId() }}"
+                                                               name="blogg_id"/>
+                                                        <input type="hidden" value="{{ Innlegg.hentId() }}"
+                                                               name="innlegg_id"/>
+                                                        <div class="row no-gutters">
+                                                            <div class="col col-sm-1 text-left">
+                                                                <button name="submit" type="submit"
+                                                                        class="btn btn-outline-warning btn-sm mt-1">
+                                                                    Slett
+                                                                </button>
+                                                            </div>
+                                                            <div class="col col-sm-11">
+                                                                "{{ Underkommentar.hentTekst() }}
+                                                                ", {{ Underkommentar.hentKallenavn() }}
+                                                                ({{ Underkommentar.hentTidspunkt() }})
+                                                            </div>
+
+                                                        </div>
+
+                                                    </form>
+                                                {% else %}
+                                                    "{{ Underkommentar.hentTekst() }}", {{ Underkommentar.hentKallenavn() }}
+                                                    ({{ Underkommentar.hentTidspunkt() }})
+                                                    <br>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+
+                                <!-- Gir mulighet til å kommentere på kommentar, om bruker er innlogget -->
+                                {% if innlogget == "innlogget" or innlogget == "innloggetEier" %}
+                                    <form method="post" action="../Blogg/leggInnKommentar.php" name="kommenter">
+
+                                        <input type="hidden" name="bruker_id" value="{{ bruker_id }}">
+                                        <input type="hidden" name="innlegg_id" value="{{ Innlegg.hentId() }}">
+                                        <input type="hidden" name="blogg_id" value="{{ Blogg.hentId() }}">
+                                        <input type="hidden" name="kommentar_id" value="{{ Kommentar.hentId() }}">
+
+                                        <div class="row justify-content-end mr-2 mb-2 mt-2">
+                                            Svar på kommentar:
+                                            <textarea type="text" name="tekst" class="form-control col-3 mr-1 ml-2"
+                                                      rows="1"
+                                                      required></textarea>
+                                            <button type="submit" class="btn btn-outline-warning">Gå!</button>
+                                        </div>
+                                    </form>
+                                {% endif %}
+                            </div> <!-- kort for å vise hver hovedkommentar -->
+                        {% endif %}
+                    {% endfor %}
+                </div> <!-- container for å vise kommentarer -->
+
+                <!-- Gir muligheten til å kommentere på innlegget, om bruker er innlogget --------------------->
+                <div class="container mb-5 mr-0">
+                    {% if innlogget == "innlogget" or innlogget == "innloggetEier" %}
+
+
+                        <form method="post" action="../Blogg/leggInnKommentar.php" name="kommenter">
+
+                            <input type="hidden" name="bruker_id" value="{{ bruker_id }}">
+                            <input type="hidden" name="innlegg_id" value="{{ Innlegg.hentId() }}">
+                            <input type="hidden" name="blogg_id" value="{{ Blogg.hentId() }}">
+
+
+                            <div class="justify-content-center mt-5 text-uppercase">
+                                Kommenter innlegg:
+                                <textarea type="text" name="tekst" class="form-control mb-2" rows="2"
+                                          required></textarea>
+                                <button type="submit" class="btn btn-warning">Legg inn kommentar</button>
+                            </div>
+                        </form>
+                    {% endif %}
+
+                </div> <!-- container for post-kommentar-->
+            </div> <!-- card - footer -->
+        </div> <!-- card - hovedklassen -->
+    {% endif %}
+</div> <!-- container start-->
+
+
+</body>
+</html>

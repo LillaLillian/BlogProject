@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Registrer ny bruker</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
+          integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+
+</head>
+<body>
+
+<!--Skjema-------------------------------->
+<div class="container pb-5">
+    <h2 class="mt-5">Registrer en ny bruker</h2>
+    <br>
+    {% if not registrert %}
+        <form method="post" action="../Blogg/Registrering.php">
+            <div class="form-group">
+                <label>Brukernavn</label>
+                <input name="brukernavn" class="form-control" placeholder="Velg et brukernavn" required>
+            </div>
+            <div class="form-group">
+                <label>Fornavn</label>
+                <input name="fornavn" class="form-control" placeholder="Fyll inn fornavnet ditt" required>
+            </div>
+            <div class="form-group">
+                <label>Etternavn</label>
+                <input name="etternavn" class="form-control" placeholder="Fyll inn etternavnet ditt" required>
+            </div>
+            <div class="form-group">
+                <label>E-post addresse</label>
+                <input name="epost" type="email" class="form-control" placeholder="Fyll inn e-post" required>
+            </div>
+            <div class="form-group">
+                <label>Passord</label>
+                <input name="passord" type="password" class="form-control" placeholder="Velg et passord" required>
+            </div>
+
+            <button name="submit" type="submit" class="btn btn-warning">Registrer meg!</button>
+        </form>
+
+    {% elseif registrert == "registrert" %}
+        <div class="card">
+            <div class="card-body">
+                <p class="lead">Du er blitt registrert!</p>
+                <p class="card-text">Vi har sendt deg en e-post. Trykk på linken for å aktivere brukeren din.</p>
+                <a class="btn btn-warning" href="../Blogg/Hjem.php" role="button">Hjem</a>
+            </div>
+        </div>
+
+
+    {% elseif registrert == "mislykket" %}
+        <div class="card">
+            <div class="card-body">
+                <p class="lead">En feil oppsto</p>
+                <p class="card-text">Vi kunne ikke registrere deg som ny blogger. Prøv et annet brukernavn og pass på at
+                    e-post adressen din ikke er brukt før.</p>
+                <a class="btn btn-warning" href="../Blogg/Registrering.php" role="button">Tilbake</a>
+                <a class="btn btn-warning" href="../Blogg/Hjem.php" role="button">Hjem</a>
+            </div>
+        </div>
+
+    {% elseif registrert == "aktivert" %}
+        <div class="card">
+            <div class="card-body">
+                <p class="lead">Brukeren din er blitt aktivert!</p>
+                <p class="card-text">Logg inn og gå til 'Min side' for å starte din bloggkarriere!</p>
+                <a class="btn btn-warning" href="../Blogg/LoggInn.php" role="button">Logg inn</a>
+                <a class="btn btn-warning" href="../Blogg/Hjem.php" role="button">Hjem</a>
+            </div>
+        </div>
+
+    {% endif %}
+
+</div>
+</div>
+
+</body>
+</html>

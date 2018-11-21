@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <title>{{ Blogg.hentTittel() }}</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
+          integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+
+</head>
+
+<body>
+<div class="container pb-5">
+    {% if innlogget == "innloggetEier" %}
+
+        <div class="row justify-content-end mr-1">
+            <!--<a class="btn btn-warning mr-1" href="NyttInnlegg.php?id={{ Blogg.hentId() }}" role="button">Opprett nytt innlegg</a>-->
+            <a class="btn btn-warning" href="AlternativInnlegg.php?id={{ Blogg.hentId() }}" role="button">Opprett
+                nytt innlegg</a>
+        </div>
+    {% endif %}
+
+    <div class="row">
+        <div class="col col-sm-9">
+            {% for Innlegg in innleggTabell %}
+
+                <div class="card text-center mt-3">
+                    <div class="card-header text-uppercase"><a
+                                href="../Blogg/VisInnlegg.php?id={{ Innlegg.hentId() }}"
+                                class="text-dark"> {{ Innlegg.hentTittel() }}  </a></div>
+
+                    {% if innlogget == "innloggetEier" %}
+                        <form method="post" action="../Blogg/slettInnlegg.php?id={{ Innlegg.hentId() }}">
+                            <input type="hidden" value="{{ Blogg.hentEier() }}" name="blogg_eier"/>
+                            <input type="hidden" value="{{ Blogg.hentId() }}" name="blogg_id"/>
+                            <div class="row justify-content-end mt-3 mr-3">
+                                <button name="submit" type="submit" class="btn btn-outline-warning">Slett
+                                    innlegg
+                                </button>
+                            </div>
+                        </form>
+                    {% endif %}
+
+                    <div class="card-body">
+                        <p class="card-text text-justify">{{ Innlegg.hentTekst() }}</p>
+                        <p class="text-right text-muted">Skrevet av {{ Innlegg.hentKallenavn() }},
+                            {{ Innlegg.hentTidspunkt() }}
+                            <br>
+                            Antall visninger: {{ Innlegg.hentAntallTreff() + 1 }}, Antall
+                            kommentarer: {{ Innlegg.hentAntallKommentarer() }}</p>
+                    </div>
+
+                    <div class="card-footer text-right ">
+
+                        <p class="text-muted">
+                            {% for Kommentar in Innlegg.hentKommentarer() %}
+
+                                "{{ Kommentar.hentTekst() }}", {{ Kommentar.hentKallenavn() }} ({{ Kommentar.hentTidspunkt() }} )
+                                <br>
+
+                            {% endfor %}
+                        </p>
+
+
+                        <p>Stikkord:
+                        {% for Stikkord in Innlegg.hentStikkordListe %}
+                            {% if (Innlegg.hentId() == Stikkord.hentInnleggId()) %}
+                                <a href="Sok.php?stikkord={{ Stikkord.hentTekst() }}">{{ Stikkord.hentTekst() }}</a>
+                            {% endif %}
+
+                        {% endfor %}
+                        </p>
+
+                    </div>
+                </div>
+
+
+            {% endfor %}
+        </div>
+
+        <div class="col col-sm-3">
+
+            <div class="card mt-3">
+                <div class="card-body">
+                    <p class="lead">Arkiv:</p>
+
+                    {% for Arkiv in arkivTabell %}
+
+                        {% if (Arkiv.hentMaaned() is not null) %}
+                            <a href="VisBlogg.php?id={{ Blogg.hentId() }}&aar={{ Arkiv.hentAar() }}&maaned={{ Arkiv.hentMaaned() }}">{{ Arkiv.hentMaanedNavn() }} {{ Arkiv.hentAar() }}
+                                ( {{ Arkiv.hentAntall() }} innlegg)</a>
+
+                            <br>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>
